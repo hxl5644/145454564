@@ -1,0 +1,32 @@
+python
+import requests
+import json
+
+# 人脸识别API的URL
+url = 'https://westus2.api.cognitive.microsoft.com/face/v1.0/detect'
+
+# 读取密钥
+with open('secret.txt') as f:
+    key = f.read()
+
+# 查询参数
+params = {
+    'returnFaceId': 'true',
+    'returnFaceLandmarks': 'false',
+    'returnFaceAttributes': 'age,gender'
+}
+
+# 读取图片数据
+img_data = open('face.jpg', 'rb').read()
+
+# 设置请求头
+headers = {
+    'Content-Type': 'application/octet-stream',
+    'Ocp-Apim-Subscription-Key': key 
+}
+
+# 发送POST请求
+response = requests.post(url, data=img_data, headers=headers, params=params)
+
+# 打印结果
+print(json.dumps(response.json(), indent=2, sort_keys=True))
